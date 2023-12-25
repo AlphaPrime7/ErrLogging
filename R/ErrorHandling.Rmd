@@ -1,0 +1,49 @@
+---
+title: "Error Logging in R"
+output: html_notebook
+---
+
+## Using Purr
+
+- Found some useful tools to test functions in R.
+- Came across some good links as well linked to this.
+- This ['{R-bloggers}'](https://www.r-bloggers.com/2022/03/capture-errors-warnings-and-messages/) link has some good information on this.
+- I think I am also liking the chronicler package by ['{Bruno Rodrigues}'](https://www.brodrigues.co/).
+
+```{r}
+#Let's use my package normfluodbf
+library(normfluodbf)
+fpath <- system.file("extdata", "dat_2.dat", package = "normfluodbf", mustWork = TRUE)
+
+#Using safely
+safe_log = purrr::safely(normfluodat)
+a = safe_log(dat=fpath, tnp = 3, cycles = 40)
+
+#Using quietly
+quiet_log = purrr::quietly(normfluodat)
+b = quiet_log(dat=fpath, tnp = 3, cycles = 40)
+
+# Based on the results I clearly see that quietly captures the message while safely fails to capture the message.
+```
+## Using TryCatch
+
+- Check out the function I cooked up based on some information from ['{Datatechnotes}'](https://www.datatechnotes.com/2017/09/logging-into-file-in-r-scripts.html). That is a good way to log error files locally and have them in hand for debugging. 
+
+## Using Chronicler
+- Seems to have some benchmarking abilities as well. Did not dive deep into it but like the way it works so far.
+
+```{r}
+# Some snippets from Bruno's chronicler found on github
+# I am rewriting because that page is found on my iPad
+
+rsqrt = chronicler::record(sqrt)
+a = rsqrt(1:5)
+a
+
+#get just the values
+chronicler::pick(a,'value')
+chronicler::pick(a,'log_df')
+
+#get the log and this gives run time
+chronicler::read_log(a)
+```
