@@ -1,6 +1,8 @@
 ---
 title: "Error Logging in R"
-output: html_notebook
+output:
+  pdf_document: default
+  html_notebook: default
 ---
 
 ## Using Purr
